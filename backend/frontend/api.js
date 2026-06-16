@@ -4,7 +4,6 @@ const API_URL = "https://easychoice-production.up.railway.app/api";
 // Текущий пользователь и токен
 let currentUser = null;
 let authToken = localStorage.getItem('easychoice_token');
-fetch(`${API_URL}/api/products`)
 // Вспомогательные функции
 function saveToken(token) {
     authToken = token;
