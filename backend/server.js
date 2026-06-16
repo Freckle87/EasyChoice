@@ -65,6 +65,7 @@ function isAdmin(req, res, next) {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
+console.log("__dirname:", __dirname);
 // ========== ТОВАРЫ ==========
 
 app.get('/api/products', async (req, res) => {
