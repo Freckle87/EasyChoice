@@ -10,10 +10,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log("Server running on", PORT);
-});
-console.log("START SERVER");
+
 app.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
 });
@@ -23,12 +20,22 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(cors());
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, 'frontend')));
 console.log({
   DATABASE_URL: process.env.DATABASE_URL ? "SET" : "NOT SET",
   PORT: process.env.PORT
+});
+app.options('*', cors());
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    next();
 });
 // Подключение к БД
 const pool = new Pool({
