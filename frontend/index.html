@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyChoice - Умные покупки бытовой техники</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <!-- Шапка -->
+   <header>
+    <div class="container header-content">
+        <div class="logo" id="logo-home">
+            <i class="fas fa-tools"></i>
+            <span>EasyChoice</span>
+        </div>
+        
+        <div class="mobile-buttons">
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <button class="mobile-profile-btn" id="mobile-profile-btn">
+                <i class="fas fa-user"></i>
+            </button>
+        </div>
+        
+        <nav id="main-nav">
+            <ul>
+                <li><a href="#" class="nav-link" data-page="home"><i class="fas fa-home"></i> Главная</a></li>
+                <li><a href="#" class="nav-link" data-page="catalog"><i class="fas fa-th-large"></i> Каталог</a></li>
+                <li><a href="#" class="nav-link" data-page="cart"><i class="fas fa-shopping-cart"></i> Корзина <span id="cart-count">(0)</span></a></li>
+                <li><a href="#" id="auth-btn-header"><i class="fas fa-user"></i> Войти</a></li>
+            </ul>
+        </nav>
+        
+        <div class="search-wrapper">
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Поиск по бренду или товару" autocomplete="off">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <div id="search-suggestions" class="search-suggestions"></div>
+        </div>
+    </div>
+</header>
+    <!-- Основной контент -->
+    <main class="container">
+        <!-- Главная страница -->
+        <section id="home" class="page active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Техника без компромиссов</h1>
+                    <p>Сравнивай. Выбирай. Экономь.</p>
+                </div>
+                <div class="hero-image">
+                    <img src="https://psv4.userapi.com/s/v1/d2/34d8VwdoG1RqJeGcpac3ljMTYd3sdNkXUyw7iwyWXZAwOJ5lSISyVEwinCEMLgSJwoL_Q0xJb68j8D5oOkRE-DjaF0H4q_e2Bwr2kt1yxC9JHMRAExpnDtvKqBlN_-xSdfFgBQaR6493/d0ae3a6c-5193-44c4-85e6-305693efad38-Photoroom.png" alt="Бытовая техника">
+                </div>
+            </div>
+            
+            <h2 class="section-title">Популярные бренды</h2>
+            <div class="brands-grid" id="brands-grid"></div>
+            
+            <h2 class="section-title">Рекомендуемые товары</h2>
+            <div class="products-grid" id="featured-products"></div>
+        </section>
+
+        <!-- Каталог - главная страница -->
+        <section id="catalog" class="page catalog-page">
+            <h1 class="section-title">Каталог техники</h1>
+            
+            <h2 class="section-title">Категории</h2>
+            <div class="category-cards" id="category-cards"></div>
+            
+            <h2 class="section-title">По бренду</h2>
+            <div class="brands-grid" id="catalog-brands"></div>
+        </section>
+
+        <!-- Каталог - страница товаров по категории -->
+        <section id="catalog-category" class="page catalog-page">
+            <div class="breadcrumb">
+                <a href="#" class="nav-link" data-page="home">Главная</a> &gt; 
+                <a href="#" class="nav-link" data-page="catalog">Каталог</a> &gt; 
+                <span id="category-name">Бытовая техника</span>
+            </div>
+            
+            <h1 class="section-title" id="category-page-title">Бытовая техника</h1>
+            
+            <div class="catalog-filters">
+                <select class="filter-select" id="filter-price">
+                    <option value="default">По цене</option>
+                    <option value="asc">Сначала дешевые</option>
+                    <option value="desc">Сначала дорогие</option>
+                </select>
+                <select class="filter-select" id="filter-popularity">
+                    <option value="default">По популярности</option>
+                    <option value="asc">По возрастанию</option>
+                    <option value="desc">По убыванию</option>
+                </select>
+            </div>
+            
+            <div class="catalog-grid" id="catalog-products"></div>
+        </section>
+
+        <!-- Страница результатов поиска -->
+        <section id="search-results" class="page search-results-page">
+            <div class="search-results-header">
+                <h1 class="section-title">Результаты поиска</h1>
+                <p>По запросу: "<span id="search-query" class="search-query"></span>"</p>
+            </div>
+            <div id="search-results-container" class="catalog-grid"></div>
+        </section>
+
+        <!-- Доставка -->
+        <section id="delivery" class="page delivery-page">
+            <div class="delivery-content">
+                <div class="delivery-section">
+                    <h2>Условия доставки</h2>
+                    <h3>Способы доставки</h3>
+                    <ul class="delivery-list">
+                        <li><i class="fas fa-truck"></i> Курьерская доставка - 500 руб. (Бесплатно при заказе от 30 000 руб.)</li>
+                        <li><i class="fas fa-box"></i> Доставка в пункт выдачи - 300 руб. (Бесплатно при заказе от 25 000 руб.)</li>
+                        <li><i class="fas fa-envelope"></i> Почта России - 500 руб (по всей территории РФ)</li>
+                    </ul>
+                    <h3>Сроки доставки</h3>
+                    <ul class="delivery-list">
+                        <li><i class="fas fa-map-marker-alt"></i> По Москве и области - 1-3 дня</li>
+                        <li><i class="fas fa-map"></i> По регионам России - 4-10 дней</li>
+                        <li><i class="fas fa-globe"></i> Отдалённые регионы - до 14 дней</li>
+                    </ul>
+                    <h3>Оплата</h3>
+                    <div class="payment-methods">
+                        <div class="payment-method"><i class="fas fa-money-bill-wave"></i><span>Наличными курьеру</span></div>
+                        <div class="payment-method"><i class="fas fa-credit-card"></i><span>Онлайн банковской картой или через СБП</span></div>
+                        <div class="payment-method"><i class="fas fa-calendar-alt"></i><span>Рассрочка от 3 до 12 месяцев</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+            <!-- Страница гарантии -->
+<section id="guarantee" class="page delivery-page">
+    <div class="delivery-content">
+        <div class="delivery-section">
+            <h2>Гарантия на товары</h2>
+            
+            <h3>Сроки гарантии</h3>
+            <ul class="delivery-list">
+                <li><i class="fas fa-check-circle"></i> Холодильники, стиральные машины — 12 месяцев</li>
+                <li><i class="fas fa-check-circle"></i> Мелкая бытовая техника — 12 месяцев</li>
+                <li><i class="fas fa-check-circle"></i> Электроника — 12 месяцев</li>
+                <li><i class="fas fa-check-circle"></i> Крупная бытовая техника — 24 месяца (на некоторые модели)</li>
+            </ul>
+            
+            <h3>Что не является гарантийным случаем</h3>
+            <ul class="delivery-list">
+                <li><i class="fas fa-times-circle"></i> Механические повреждения</li>
+                <li><i class="fas fa-times-circle"></i> Неправильная эксплуатация</li>
+                <li><i class="fas fa-times-circle"></i> Самостоятельный ремонт</li>
+                <li><i class="fas fa-times-circle"></i> Естественный износ деталей</li>
+            </ul>
+            
+            <h3>Как воспользоваться гарантией</h3>
+            <ul class="delivery-list">
+                <li><i class="fas fa-phone"></i> Обратитесь в нашу сервисную службу по телефону +7 (495) 123-45-67</li>
+                <li><i class="fas fa-envelope"></i> Напишите на email: service@EasyChoice.ru</li>
+                <li><i class="fas fa-file-alt"></i> Предоставьте чек и гарантийный талон</li>
+                <li><i class="fas fa-box"></i> Упакуйте товар в оригинальную упаковку</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Страница возврата и обмена -->
+<section id="returns" class="page delivery-page">
+    <div class="delivery-content">
+        <div class="delivery-section">
+            <h2>Возврат и обмен товара</h2>
+            
+            <h3>Условия возврата</h3>
+            <ul class="delivery-list">
+                <li><i class="fas fa-calendar-alt"></i> Срок возврата — 14 дней с момента получения</li>
+                <li><i class="fas fa-box"></i> Товар должен быть в оригинальной упаковке</li>
+                <li><i class="fas fa-tag"></i> Сохранены все ярлыки и пломбы</li>
+                <li><i class="fas fa-receipt"></i> Наличие чека или другого подтверждения покупки</li>
+                <li><i class="fas fa-check-circle"></i> Товар не должен быть в употреблении</li>
+            </ul>
+            
+            <h3>Как вернуть товар</h3>
+            <ul class="delivery-list">
+                <li><i class="fas fa-phone"></i> Свяжитесь с нами по телефону +7 (495) 123-45-67</li>
+                <li><i class="fas fa-envelope"></i> Отправьте заявку на email: returns@EasyChoice.ru</li>
+                <li><i class="fas fa-truck"></i> Курьер заберёт товар бесплатно</li>
+                <li><i class="fas fa-credit-card"></i> Деньги вернутся тем же способом в течение 3-10 дней</li>
+            </ul>
+        </div>
+    </div>
+</section>
+        <!-- Карточка товара -->
+        <section id="product" class="page product-page">
+            <div class="breadcrumb">
+                <a href="#" class="nav-link" data-page="home">Главная</a> &gt; 
+                <a href="#" class="nav-link" data-page="catalog">Каталог</a> &gt; 
+                <span id="product-breadcrumb-name">Холодильник Samsung</span>
+            </div>
+            <div class="product-card" id="product-card"></div>
+        </section>
+        
+        <!-- Корзина -->
+        <section id="cart" class="page">
+            <div class="cart-container">
+                <div class="cart-header">
+                    <h1><i class="fas fa-shopping-cart"></i> Ваша корзина</h1>
+                    <div class="cart-subtitle">Проверьте выбранные товары перед оформлением заказа</div>
+                </div>
+                <div class="cart-content">
+                    <div id="cart-items-container"></div>
+                    <div class="cart-summary">
+                        <div class="summary-row"><span class="summary-label">Товары:</span><span class="summary-value" id="subtotal">0 руб.</span></div>
+                        <div class="summary-row"><span class="summary-label">Доставка:</span><span class="summary-value" id="shipping-cost">0 руб.</span></div>
+                        <div class="summary-row total-row"><span class="total-label">Итого:</span><span class="total-price" id="total-price">0 руб.</span></div>
+                    </div>
+                    <div class="cart-actions">
+                        <button class="btn-checkout" id="checkout-btn"><i class="fas fa-credit-card"></i> Оформить заказ</button>
+                        <button class="btn-continue" id="continue-shopping"><i class="fas fa-arrow-left"></i> Продолжить покупки</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Страница оформления заказа -->
+        <section id="checkout" class="page">
+            <div class="checkout-container">
+                <div class="checkout-header">
+                    <h1 class="section-title">Оформление заказа</h1>
+                    <p>Заполните данные для доставки и проверьте ваш заказ</p>
+                </div>
+                <div class="checkout-content">
+                    <div class="delivery-info">
+                        <h2 class="section-title">Данные для доставки</h2>
+                        <form id="delivery-form">
+                            <div class="form-group"><label for="full-name">Имя и Фамилия</label><input type="text" id="full-name" class="form-input" placeholder="Введите ваше имя и фамилию" required></div>
+                            <div class="form-group"><label for="email">Email</label><input type="email" id="email" class="form-input" placeholder="вашапочта@yandex.ru" required></div>
+                            <div class="form-group"><label for="phone">Телефон</label><input type="tel" id="phone" class="form-input" placeholder="+7 (999) 123-45-67" required></div>
+                            <div class="form-group"><label for="city">Город</label><input type="text" id="city" class="form-input" placeholder="Введите ваш город" required></div>
+                            <div class="form-group"><label for="address">Адрес доставки или пункта выдачи</label><input type="text" id="address" class="form-input" placeholder="Введите полный адрес доставки или пункта выдачи" required></div>
+                            <div class="form-group"><label for="comment">Комментарий к заказу</label><textarea id="comment" class="form-input form-textarea" placeholder="Дополнительное пожелание к заказу"></textarea></div>
+                        </form>
+                    </div>
+                    <div class="order-summary-checkout">
+                        <h2 class="section-title">Ваш заказ</h2>
+                        <div id="order-items"></div>
+                        <div class="order-total">
+                            <div class="total-row"><span class="total-label">Товары:</span><span class="total-value" id="items-total">0 руб.</span></div>
+                            <div class="total-row"><span class="total-label">Доставка:</span><span class="total-value" id="shipping-cost-checkout">0 руб.</span></div>
+                            <div class="total-row final-total"><span>Итого:</span><span id="final-total">0 руб.</span></div>
+                        </div>
+                        <button class="confirm-order-btn" id="confirm-order-btn"><i class="fas fa-check-circle"></i> Подтвердить заказ</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Страница подтверждения заказа -->
+        <section id="confirmation" class="page">
+            <div class="confirmation-page">
+                <div class="confirmation-icon"><i class="fas fa-check-circle"></i></div>
+                <h2 class="confirmation-title">Заказ успешно оформлен!</h2>
+                <p class="confirmation-message">Спасибо за покупку в EasyChoice. Наш менеджер свяжется с вами в течение часа для подтверждения заказа.</p>
+                <div class="confirmation-details">
+                    <h3>Детали заказа</h3>
+                    <p><strong>Номер заказа:</strong> <span id="order-number">EA-2025-001</span></p>
+                    <p><strong>Имя:</strong> <span id="customer-name">Иван Иванов</span></p>
+                    <p><strong>Телефон:</strong> <span id="customer-phone">+7 (999) 123-45-67</span></p>
+                    <p><strong>Сумма заказа:</strong> <span id="order-amount">0 руб.</span></p>
+                    <p><strong>Статус:</strong> <span style="color: var(--moonstone);">В обработке</span></p>
+                </div>
+                <button class="confirm-order-btn" id="back-to-home"><i class="fas fa-home"></i> Вернуться на главную</button>
+            </div>
+        </section>
+        
+        <!-- Модальное окно авторизации -->
+        <div id="auth-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Вход</button>
+                    <button class="auth-tab" data-tab="register">Регистрация</button>
+                </div>
+                <div id="login-form" class="auth-form active">
+                    <h3>Добро пожаловать!</h3>
+                    <p>Войдите в свой аккаунт</p>
+                    <div class="form-group"><input type="email" id="login-email" class="form-input" placeholder="Email" required></div>
+                    <div class="form-group"><input type="password" id="login-password" class="form-input" placeholder="Пароль" required></div>
+                    <button id="login-btn" class="btn-auth">Войти</button>
+                </div>
+                <div id="register-form" class="auth-form">
+                    <h3>Создать аккаунт</h3>
+                    <p>Зарегистрируйтесь для удобных покупок</p>
+                    <div class="form-group">
+                        <input type="text" id="register-name" class="form-input" placeholder="Имя и фамилия" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="register-email" class="form-input" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="register-password" class="form-input" placeholder="Пароль (мин. 6 символов)" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="register-confirm-password" class="form-input" placeholder="Подтвердите пароль" required>
+                    </div>
+                    <button id="register-btn" class="btn-auth">Зарегистрироваться</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Модальное окно профиля -->
+        <div id="profile-modal" class="modal">
+            <div class="modal-content profile-modal-content">
+                <span class="close-modal" id="close-profile">&times;</span>
+                <h2>Личный кабинет</h2>
+                <div id="profile-info" class="profile-info"></div>
+                <hr>
+                <h3>История заказов</h3>
+                <div id="orders-history" class="orders-list"></div>
+                <button id="logout-btn" class="btn btn-danger" style="width: 100%; margin-top: 15px;">Выйти из аккаунта</button>
+            </div>
+        </div>
+        <!-- Страница личного кабинета -->
+<section id="profile-page" class="page">
+    <div class="profile-page-container">
+        <div class="profile-page-header">
+            <h1 class="section-title"><i class="fas fa-user-circle"></i> Личный кабинет</h1>
+            <p>Управление аккаунтом и заказами</p>
+        </div>
+        
+        <div class="profile-page-content">
+            <!-- Левая колонка - меню -->
+            <div class="profile-page-sidebar">
+                <div class="profile-user-info">
+                    <div class="profile-user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-user-name" id="profile-user-name">Загрузка...</div>
+                    <div class="profile-user-email" id="profile-user-email"></div>
+                </div>
+                <nav class="profile-page-nav">
+                    <button class="profile-nav-btn active" data-tab="orders">
+                        <i class="fas fa-shopping-bag"></i> Мои заказы
+                    </button>
+                    <button class="profile-nav-btn" data-tab="settings">
+                        <i class="fas fa-sliders-h"></i> Настройки
+                    </button>
+                    <button class="profile-nav-btn logout" id="profile-logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Выйти
+                    </button>
+                </nav>
+            </div>
+            
+            <!-- Правая колонка - контент -->
+            <div class="profile-page-main">
+                <!-- Вкладка: Мои заказы -->
+                <div id="profile-tab-orders" class="profile-tab active">
+                    <h2><i class="fas fa-shopping-bag"></i> Мои заказы</h2>
+                    <div id="profile-orders-list" class="profile-orders-list">
+                        <p>Загрузка заказов...</p>
+                    </div>
+                </div>
+                
+                <!-- Вкладка: Настройки -->
+                <div id="profile-tab-settings" class="profile-tab">
+                    <h2><i class="fas fa-sliders-h"></i> Настройки аккаунта</h2>
+                    <form id="profile-settings-form" class="profile-settings-form">
+                        <div class="form-group">
+                            <label>Имя</label>
+                            <input type="text" id="profile-name" class="form-input" placeholder="Введите ваше имя">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="profile-email" class="form-input" placeholder="Email" disabled>
+                            <small>Email нельзя изменить</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Телефон</label>
+                            <input type="tel" id="profile-phone" class="form-input" placeholder="+7 (xxx) xxx-xx-xx">
+                        </div>
+                        <div class="form-group">
+                            <label>Город</label>
+                            <input type="text" id="profile-city" class="form-input" placeholder="Ваш город">
+                        </div>
+                        <div class="form-group">
+                            <label>Адрес доставки</label>
+                            <input type="text" id="profile-address" class="form-input" placeholder="Улица, дом, квартира">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                    </form>
+                    
+                    <div style="margin-top: 40px;">
+                        <h3><i class="fas fa-lock"></i> Смена пароля</h3>
+                        <form id="profile-password-form" class="profile-settings-form">
+                            <div class="form-group">
+                                <label>Текущий пароль</label>
+                                <input type="password" id="profile-current-password" class="form-input" placeholder="Введите текущий пароль">
+                            </div>
+                            <div class="form-group">
+                                <label>Новый пароль</label>
+                                <input type="password" id="profile-new-password" class="form-input" placeholder="Новый пароль (мин. 6 символов)">
+                            </div>
+                            <div class="form-group">
+                                <label>Подтверждение пароля</label>
+                                <input type="password" id="profile-confirm-password" class="form-input" placeholder="Подтвердите новый пароль">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Сменить пароль</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    </main>
+
+    <!-- Подвал -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3>О компании</h3>
+                <p>EasyChoice - магазин бытовой техники с детальным анализом каждой модели. Мы помогаем сделать правильный выбор для вашего дома.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <ul>
+                    <li><i class="fas fa-phone"></i> Телефон: +7 (495) 123-45-67</li>
+                    <li><i class="fas fa-envelope"></i> Email: info@EasyChoice.ru</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Адрес: Москва, ул. Примерная, д. 123</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+    <h3>Полезные ссылки</h3>
+    <ul>
+        <li><a href="#" class="nav-link" data-page="delivery"><i class="fas fa-truck"></i> Доставка</a></li>
+        <li><a href="#" class="nav-link" data-page="guarantee"><i class="fas fa-shield-alt"></i> Гарантия</a></li>
+        <li><a href="#" class="nav-link" data-page="returns"><i class="fas fa-exchange-alt"></i> Возврат и обмен</a></li>
+    </ul>
+</div>
+            </div>
+        </div>
+        <div class="container copyright">
+            <p>&copy; 2026 EasyChoice. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Уведомление -->
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-message"></span>
+    </div>
+
+    <!-- Админ панель -->
+    <div id="admin-panel" style="display: none;">
+        <div class="admin-fab" id="admin-fab">
+            <i class="fas fa-cog"></i>
+        </div>
+        <div class="admin-menu" id="admin-menu">
+            <div class="admin-menu-header">
+                <i class="fas fa-shield-alt"></i>
+                <span>Админ панель</span>
+                <button class="admin-menu-close">&times;</button>
+            </div>
+            <div class="admin-menu-content">
+                <button id="admin-add-product" class="admin-menu-item">
+                    <i class="fas fa-plus-circle"></i> Добавить товар
+                </button>
+                <button id="admin-edit-products" class="admin-menu-item">
+                    <i class="fas fa-edit"></i> Управление товарами
+                </button>
+                <button id="admin-orders" class="admin-menu-item">
+                    <i class="fas fa-truck"></i> Управление заказами
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления/редактирования товара -->
+    <!-- Модальное окно добавления/редактирования товара -->
+<div id="admin-product-modal" class="modal">
+    <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+        <span class="close-modal admin-modal-close">&times;</span>
+        <h2 id="admin-product-title">Добавить товар</h2>
+        <form id="admin-product-form">
+            <!-- Общие поля для всех категорий -->
+            <div class="form-group">
+                <label>Название товара</label>
+                <input type="text" id="admin-product-name" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Бренд</label>
+                <select id="admin-product-brand" class="form-input" required>
+                    <option value="">Выберите бренд</option>
+                    <option value="samsung">Samsung</option>
+                    <option value="lg">LG</option>
+                    <option value="bosch">Bosch</option>
+                    <option value="dyson">Dyson</option>
+                    <option value="philips">Philips</option>
+                    <option value="karcher">Karcher</option>
+                    <option value="redmond">Redmond</option>
+                    <option value="indesit">Indesit</option>
+                    <option value="gorenje">Gorenje</option>
+                    <option value="haier">Haier</option>
+                    <option value="candy">Candy</option>
+                    <option value="beko">Beko</option>
+                    <option value="delonghi">DeLonghi</option>
+                    <option value="midea">Midea</option>
+                    <option value="xiaomi">Xiaomi</option>
+                    <option value="polaris">Polaris</option>
+                    <option value="tefal">Tefal</option>
+                    <option value="scarlett">Scarlett</option>
+                    <option value="nivona">Nivona</option>
+                    <option value="melitta">Melitta</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Категория</label>
+                <select id="admin-product-category" class="form-input" required>
+                    <option value="">Выберите категорию</option>
+                    <option value="refrigerators">Холодильники</option>
+                    <option value="washing_machines">Стиральные машины</option>
+                    <option value="vacuum_cleaners">Пылесосы</option>
+                    <option value="microwaves">Микроволновки</option>
+                    <option value="coffee_machines">Кофемашины</option>
+                    <option value="multicookers">Мультиварки</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Цена (руб)</label>
+                <input type="number" id="admin-product-price" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Ссылка на изображение</label>
+                <input type="url" id="admin-product-image" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Год выпуска</label>
+                <input type="number" id="admin-product-year" class="form-input" value="2024">
+            </div>
+            
+            <div class="form-group">
+                <label>Популярность (1-100)</label>
+                <input type="number" id="admin-product-popularity" class="form-input" value="50" min="1" max="100">
+            </div>
+            
+            <!-- Динамические поля для характеристик -->
+            <div id="dynamic-specs-container"></div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button type="submit" class="btn-auth" style="flex: 1;">Сохранить товар</button>
+                <button type="button" class="btn-auth admin-modal-close" style="background: var(--danger-color); flex: 0.3;">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <!-- Модальное окно управления заказами -->
+    <div id="admin-orders-modal" class="modal">
+        <div class="modal-content" style="max-width: 800px; max-height: 80vh; overflow-y: auto;">
+            <span class="close-modal admin-orders-close">&times;</span>
+            <h2>Управление заказами</h2>
+            <div id="admin-orders-list" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно управления товарами -->
+    <div id="admin-products-modal" class="modal">
+        <div class="modal-content" style="max-width: 900px; max-height: 80vh; overflow-y: auto;">
+            <span class="close-modal admin-products-close">&times;</span>
+            <h2>Управление товарами</h2>
+            <div id="admin-products-list" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно быстрого просмотра товара -->
+    <div id="quickview-modal" class="modal quickview-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="document.getElementById('quickview-modal').style.display='none'">&times;</span>
+            <div class="quickview-content">
+                <div class="quickview-image" id="quickview-image"></div>
+                <div class="quickview-info">
+                    <h3 id="quickview-title"></h3>
+                    <p id="quickview-brand" style="color: var(--blue-slate); margin: 10px 0;"></p>
+                    <div class="product-price" id="quickview-price" style="font-size: 28px;"></div>
+                    <p id="quickview-specs" style="margin: 15px 0; color: var(--text-light);"></p>
+                    <p id="quickview-energy"></p>
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button class="btn" id="quickview-add-to-cart" style="flex: 2;"><i class="fas fa-shopping-cart"></i> В корзину</button>
+                        <button class="btn btn-outline" id="quickview-wishlist" style="flex: 1;"><i class="fas fa-heart"></i></button>
+                    </div>
+                    <button class="btn btn-outline" style="margin-top: 10px;" onclick="const id = document.getElementById('quickview-add-to-cart').dataset.id; showProductPage(parseInt(id)); document.getElementById('quickview-modal').style.display='none'">
+                        <i class="fas fa-info-circle"></i> Полное описание
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- СКРИПТЫ - порядок важен! -->
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+    <script src="admin.js"></script>
+    <script src="enhancements.js"></script>
+    <script src="service-worker.js"></script>
+</body>
+</html>
