@@ -4430,3 +4430,17 @@ html, body {
         font-size: 11px;
     }
 }
+.product-info {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.product-price {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.product-card .btn:first-of-type {
+    margin-top: auto;
+}
