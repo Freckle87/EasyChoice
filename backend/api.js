@@ -1,10 +1,10 @@
 // api.js - Работа с бэкендом EasyChoice (PostgreSQL)
-const API_URL = 'http://localhost:3001/api';
+const API_URL = window.location.origin;
 
 // Текущий пользователь и токен
 let currentUser = null;
 let authToken = localStorage.getItem('easychoice_token');
-
+fetch(`${API_URL}/api/products`)
 // Вспомогательные функции
 function saveToken(token) {
     authToken = token;
