@@ -6,7 +6,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on ${PORT}`);
+});
 const JWT_SECRET = process.env.JWT_SECRET;
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
@@ -541,7 +545,7 @@ app.get('/api/admin/guest-orders', authenticateToken, isAdmin, async (req, res) 
     }
 });
 // ========== ЗАПУСК ==========
-app.listen(PORT, () => {
+app.listen(process.env.PORT, () => {
     console.log(`
 ╔════════════════════════════════════════╗
 ║   🚀 EasyChoice Сервер запущен!        ║
