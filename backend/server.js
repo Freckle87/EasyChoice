@@ -62,9 +62,6 @@ function isAdmin(req, res, next) {
     }
     next();
 }
-app.get('/', (req, res) => {
-    res.send('EasyChoice работает!');
-});
 // ========== ТОВАРЫ ==========
 
 app.get('/api/products', async (req, res) => {
