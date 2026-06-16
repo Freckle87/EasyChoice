@@ -30,7 +30,6 @@ console.log({
   DATABASE_URL: process.env.DATABASE_URL ? "SET" : "NOT SET",
   PORT: process.env.PORT
 });
-app.options('*', cors());
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
