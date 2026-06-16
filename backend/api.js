@@ -1,5 +1,5 @@
 // api.js - Работа с бэкендом EasyChoice (PostgreSQL)
-const API_URL = window.location.origin;
+const API_URL = 'https://easychoice-production.up.railway.app';
 
 // Текущий пользователь и токен
 let currentUser = null;
