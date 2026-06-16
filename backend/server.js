@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'frontend')));
+app.use(express.static(path.resolve(__dirname, 'frontend')));
 console.log({
   DATABASE_URL: process.env.DATABASE_URL ? "SET" : "NOT SET",
   PORT: process.env.PORT
@@ -65,7 +65,7 @@ function isAdmin(req, res, next) {
     next();
 }
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+  res.sendFile(path.resolve(__dirname, 'frontend/index.html'));
 });
 console.log("__dirname:", __dirname);
 // ========== ТОВАРЫ ==========
