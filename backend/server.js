@@ -20,10 +20,8 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(express.json());
 console.log({
-  DB_HOST: process.env.DB_HOST,
-  DB_PORT: process.env.DB_PORT,
-  DB_NAME: process.env.DB_NAME,
-  DB_USER: process.env.DB_USER
+  DATABASE_URL: process.env.DATABASE_URL ? "SET" : "NOT SET",
+  PORT: process.env.PORT
 });
 // Подключение к БД
 const pool = new Pool({
