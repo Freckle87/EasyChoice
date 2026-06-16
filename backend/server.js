@@ -6,6 +6,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 
+
+app.use(express.static(path.join(__dirname, 'frontend')));
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -24,7 +27,6 @@ app.use((req, res, next) => {
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('frontend'));
 console.log({
   DATABASE_URL: process.env.DATABASE_URL ? "SET" : "NOT SET",
   PORT: process.env.PORT
