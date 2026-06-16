@@ -9,6 +9,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
+  console.log("Server running on", PORT);
+});
+console.log("START SERVER");
+app.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
 });
 const JWT_SECRET = process.env.JWT_SECRET;
