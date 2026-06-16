@@ -1,10 +1,10 @@
 // api.js - Работа с бэкендом EasyChoice (PostgreSQL)
-const API_URL = 'http://localhost:3001/api';
+const API_URL = 'https://easychoice-production.up.railway.app';
 
 // Текущий пользователь и токен
 let currentUser = null;
 let authToken = localStorage.getItem('easychoice_token');
-
+fetch(`${API_URL}/api/products`)
 // Вспомогательные функции
 function saveToken(token) {
     authToken = token;
@@ -101,13 +101,7 @@ async function loginUserAPI(email, password) {
         return { success: false, error: 'Ошибка соединения' };
     }
 }
-function getCurrentUser() {
-    return currentUser;
-}
 
-function getToken() {
-    return localStorage.getItem('easychoice_token');
-}
 function logoutUserAPI() {
     saveToken(null);
     currentUser = null;
@@ -475,6 +469,5 @@ window.api = {
     loadReviews: loadReviewsAPI,
     addReview: addReviewAPI
 };
-window.api.getCurrentUser = getCurrentUser;
-window.api.getToken = getToken;
+
 console.log('API модуль загружен, бэкенд: ' + API_URL);
